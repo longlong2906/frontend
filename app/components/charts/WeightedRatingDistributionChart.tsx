@@ -14,30 +14,30 @@ export default function WeightedRatingDistributionChart({ data }: WeightedRating
       <ResponsiveContainer width="100%" height={350}>
         <BarChart data={data} margin={{ top: 10, right: 20, left: 10, bottom: 80 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-          <XAxis 
-            dataKey="range" 
-            stroke="#aaa" 
-            tick={{ 
-              fontSize: 11, 
+          <XAxis
+            dataKey="range"
+            stroke="#aaa"
+            tick={{
+              fontSize: 11,
               fill: '#ffffff',
               angle: -45,
               textAnchor: 'end'
-            }}
+            } as any}
             height={60}
             label={{ value: 'Weighted Rating', position: 'bottom', offset: 10, fill: '#ffffff', style: { textAnchor: 'middle', fontSize: 13 } }}
           />
-          <YAxis 
+          <YAxis
             stroke="#aaa"
-            tick={{ 
-              fontSize: 12, 
+            tick={{
+              fontSize: 12,
               fill: '#ffffff'
             }}
             label={{ value: 'Số lượng', angle: -90, position: 'insideLeft', fill: '#ffffff', style: { textAnchor: 'middle' } }}
           />
-          <Tooltip 
-            contentStyle={{ 
-              backgroundColor: '#1a1a1a', 
-              border: '1px solid #333', 
+          <Tooltip
+            contentStyle={{
+              backgroundColor: '#1a1a1a',
+              border: '1px solid #333',
               borderRadius: '8px',
               color: '#ffffff'
             }}

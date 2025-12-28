@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import MovieCard from '../../components/movies/MovieCard';
-
 import API_BASE from '../../config';
 
 interface Movie {
@@ -17,7 +16,7 @@ interface Movie {
     poster_path?: string;
 }
 
-export default function MovieListPage() {
+function MovieListContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -186,5 +185,13 @@ export default function MovieListPage() {
                 </svg>
             </button>
         </div>
+    );
+}
+
+export default function MovieListPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-white">Đang tải...</div>}>
+            <MovieListContent />
+        </Suspense>
     );
 }

@@ -29,10 +29,10 @@ export default function DecadeDistributionChart({ data }: DecadeDistributionChar
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
-          <Tooltip 
-            contentStyle={{ 
-              backgroundColor: '#1a1a1a', 
-              border: '1px solid #333', 
+          <Tooltip
+            contentStyle={{
+              backgroundColor: '#1a1a1a',
+              border: '1px solid #333',
               borderRadius: '8px',
               color: '#ffffff'
             }}
@@ -44,9 +44,8 @@ export default function DecadeDistributionChart({ data }: DecadeDistributionChar
               return [`${value} phim (${percent}%)`, name];
             }}
           />
-          <Legend 
+          <Legend
             wrapperStyle={{ paddingTop: '10px' }}
-            contentStyle={{ color: '#ffffff', fontSize: '12px' }}
           />
         </PieChart>
       </ResponsiveContainer>

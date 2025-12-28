@@ -14,28 +14,28 @@ export default function NormalizedComparisonChart({ data }: NormalizedComparison
       <ResponsiveContainer width="100%" height={350}>
         <LineChart data={data} margin={{ top: 10, right: 20, left: 10, bottom: 10 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-          <XAxis 
-            dataKey="decade" 
+          <XAxis
+            dataKey="decade"
             stroke="#aaa"
             tick={{ fill: '#ffffff', fontSize: 12 }}
             label={{ value: 'Thập kỷ', position: 'insideBottom', offset: -5, fill: '#ffffff', style: { textAnchor: 'middle' } }}
           />
-          <YAxis 
+          <YAxis
             stroke="#aaa"
             tick={{ fill: '#ffffff', fontSize: 12 }}
             domain={[0, 0.5]}
             label={{ value: 'Giá trị chuẩn hóa', angle: -90, position: 'insideLeft', fill: '#ffffff', style: { textAnchor: 'middle' } }}
           />
-          <Tooltip 
-            contentStyle={{ 
-              backgroundColor: '#1a1a1a', 
-              border: '1px solid #333', 
+          <Tooltip
+            contentStyle={{
+              backgroundColor: '#1a1a1a',
+              border: '1px solid #333',
               borderRadius: '8px',
               color: '#ffffff'
             }}
             labelStyle={{ color: '#ffffff', fontWeight: 600 }}
             itemStyle={{ color: '#ffffff' }}
-            formatter={(value: any, name: string) => {
+            formatter={(value: any, name: any) => {
               const formattedValue = typeof value === 'number' ? value.toFixed(4) : value;
               const nameMap: { [key: string]: string } = {
                 'popularity_normalized': 'Popularity',

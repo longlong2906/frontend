@@ -28,10 +28,10 @@ export default function LanguageDistributionChart({ data }: LanguageDistribution
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
-          <Tooltip 
-            contentStyle={{ 
-              backgroundColor: '#1a1a1a', 
-              border: '1px solid #333', 
+          <Tooltip
+            contentStyle={{
+              backgroundColor: '#1a1a1a',
+              border: '1px solid #333',
               borderRadius: '8px',
               color: '#ffffff'
             }}
@@ -43,8 +43,8 @@ export default function LanguageDistributionChart({ data }: LanguageDistribution
               return [`${value} phim (${percent}%)`, name];
             }}
           />
-          <Legend 
-            verticalAlign="bottom" 
+          <Legend
+            verticalAlign="bottom"
             height={80}
             iconType="circle"
             wrapperStyle={{ paddingTop: '20px' }}
@@ -57,7 +57,6 @@ export default function LanguageDistributionChart({ data }: LanguageDistribution
               }
               return value;
             }}
-            contentStyle={{ color: '#ffffff', fontSize: '12px' }}
           />
         </PieChart>
       </ResponsiveContainer>
