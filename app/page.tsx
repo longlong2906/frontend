@@ -83,7 +83,7 @@ export default function Home() {
             {
               icon: '📊',
               title: 'Trực quan hóa dữ liệu',
-              desc: '17+ loại biểu đồ tương tác để phân tích dữ liệu phim'
+              desc: '20 loại biểu đồ để phân tích dữ liệu phim'
             },
             {
               icon: '🤖',
@@ -93,7 +93,7 @@ export default function Home() {
             {
               icon: '🔍',
               title: 'Tìm kiếm nâng cao',
-              desc: 'Lọc theo thể loại, năm, rating và nhiều tiêu chí khác'
+              desc: 'Tìm kiếm phim theo tên. Lọc phim theo thể loại, quốc gia'
             }
           ].map((feature, i) => (
             <div key={i} className="bg-zinc-900/30 backdrop-blur-sm border border-zinc-800 rounded-2xl p-6 hover:border-violet-500/30 transition-colors group">
