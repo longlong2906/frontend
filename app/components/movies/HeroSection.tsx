@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import API_BASE from '../../config';
 
 interface Movie {
   id: number;
@@ -33,7 +34,7 @@ export default function HeroSection({ movies }: HeroSectionProps) {
       const data: { [key: number]: any } = {};
       for (const movie of movies) {
         try {
-          const res = await fetch(`http://localhost:5000/api/movies/${movie.id}/tmdb`);
+          const res = await fetch(`${API_BASE}/movies/${movie.id}/tmdb`);
           if (res.ok) {
             const tmdbInfo = await res.json();
             data[movie.id] = tmdbInfo;

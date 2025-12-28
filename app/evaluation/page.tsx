@@ -1,5 +1,7 @@
 "use client";
 
+import API_BASE from '../config';
+
 import { useEffect, useState } from 'react';
 import {
     BarChart,
@@ -28,7 +30,7 @@ export default function EvaluationPage() {
         const fetchMetrics = async () => {
             try {
                 // Fetch from new endpoint
-                const res = await fetch('http://localhost:5000/api/evaluation');
+                const res = await fetch(`${API_BASE}/evaluation`);
                 if (!res.ok) throw new Error('Failed to fetch metrics');
                 const data = await res.json();
                 setMetrics(data);

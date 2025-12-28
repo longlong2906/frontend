@@ -27,7 +27,7 @@ import {
   RatingByLanguageChart,
 } from '../components/charts';
 
-const API_BASE = 'http://localhost:5000/api';
+import API_BASE from '../config';
 
 interface Stats {
   total_movies: number;

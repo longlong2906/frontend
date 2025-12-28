@@ -5,7 +5,7 @@ import Link from 'next/link';
 import MovieRow from '../components/movies/MovieRow';
 import HeroSection from '../components/movies/HeroSection';
 
-const API_BASE = 'http://localhost:5000/api';
+import API_BASE from '../config';
 
 interface Movie {
   id: number;

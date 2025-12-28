@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
+import API_BASE from '../config';
 import Link from 'next/link';
 
 export default function LoginPage() {
@@ -17,7 +18,7 @@ export default function LoginPage() {
         setError('');
 
         try {
-            const res = await fetch('http://localhost:5000/api/auth/login', {
+            const res = await fetch(`${API_BASE}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),
@@ -41,7 +42,7 @@ export default function LoginPage() {
             <div className="w-full max-w-md bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-2xl p-8 shadow-2xl">
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold mb-2">Chào mừng trở lại 👋</h1>
-                    
+
                 </div>
 
                 {error && (

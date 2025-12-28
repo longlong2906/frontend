@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const API_BASE = 'http://localhost:5000/api';
+import API_BASE from '../../config';
 
 interface MovieDetail {
   id: number;

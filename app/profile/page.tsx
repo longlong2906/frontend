@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
+import API_BASE from '../config';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -30,7 +31,7 @@ export default function ProfilePage() {
 
         const fetchProfile = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/user/profile', {
+                const res = await fetch(`${API_BASE}/user/profile`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

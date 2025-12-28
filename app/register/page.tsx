@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import API_BASE from '../config';
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -35,7 +36,7 @@ export default function RegisterPage() {
 
         try {
             console.log("Submitting registration...");
-            const res = await fetch('http://localhost:5000/api/auth/register', {
+            const res = await fetch(`${API_BASE}/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),

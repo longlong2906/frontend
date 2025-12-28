@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import API_BASE from '../config';
 
 interface User {
     username: string;
@@ -31,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const fetchFavorites = async (currentToken: string) => {
         try {
-            const res = await fetch('http://localhost:5000/api/user/favorites/ids', {
+            const res = await fetch(`${API_BASE}/user/favorites/ids`, {
                 headers: { 'Authorization': `Bearer ${currentToken}` }
             });
             if (res.ok) {
@@ -94,7 +95,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setFavorites(newFavs);
 
         try {
-            const res = await fetch('http://localhost:5000/api/user/favorites', {
+            const res = await fetch(`${API_BASE}/user/favorites`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -120,7 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setFavorites(newFavs);
 
         try {
-            await fetch('http://localhost:5000/api/user/favorites', {
+            await fetch(`${API_BASE}/user/favorites`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
