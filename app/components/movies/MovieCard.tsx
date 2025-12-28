@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useAuth } from '../../context/AuthContext';
@@ -23,23 +22,6 @@ interface MovieCardProps {
 export default function MovieCard({ movie }: MovieCardProps) {
   const router = useRouter();
   const { favorites, toggleFavorite, isAuthenticated } = useAuth();
-  const [tmdbData, setTmdbData] = useState<any>(null);
-
-  useEffect(() => {
-    const fetchTMDB = async () => {
-      try {
-        const res = await fetch(`http://localhost:5000/api/movies/${movie.id}/tmdb`);
-        if (res.ok) {
-          const data = await res.json();
-          setTmdbData(data);
-        }
-      } catch (error) {
-        console.error('Error fetching TMDB data:', error);
-      }
-    };
-
-    fetchTMDB();
-  }, [movie.id]);
 
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -54,8 +36,8 @@ export default function MovieCard({ movie }: MovieCardProps) {
 
   const isFavorite = favorites.includes(movie.id);
 
-  const posterUrl = tmdbData?.poster_path
-    ? `https://image.tmdb.org/t/p/w500${tmdbData.poster_path}`
+  const posterUrl = movie.poster_path
+    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : null;
 
   const handleClick = () => {

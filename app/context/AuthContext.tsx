@@ -17,6 +17,7 @@ interface AuthContextType {
     isLoading: boolean;
     favorites: number[];
     toggleFavorite: (movieId: number) => Promise<void>;
+    removeFavorite: (movieId: number) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -99,15 +100,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ movieId })
+                body: JSON.stringify({ movieId }) // Default toggle
             });
 
             if (!res.ok) {
-                // Revert/Refetch on error
                 fetchFavorites(token);
             }
         } catch (e) {
             console.error("Error toggling favorite", e);
+            fetchFavorites(token);
+        }
+    };
+
+    const removeFavorite = async (movieId: number) => {
+        if (!token) return;
+
+        // Optimistic Remove
+        const newFavs = favorites.filter(id => id !== movieId);
+        setFavorites(newFavs);
+
+        try {
+            await fetch('http://localhost:5000/api/user/favorites', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ movieId, action: 'remove' })
+            });
+        } catch (e) {
+            console.error("Error removing favorite", e);
             fetchFavorites(token);
         }
     };
@@ -121,7 +143,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             isAuthenticated: !!token,
             isLoading,
             favorites,
-            toggleFavorite
+            toggleFavorite,
+            removeFavorite
         }}>
             {children}
         </AuthContext.Provider>

@@ -41,20 +41,39 @@ export default function MoviesPage() {
   const [languages, setLanguages] = useState<Language[]>([]);
   const [genreMovies, setGenreMovies] = useState<{ [key: string]: Movie[] }>({});
   const [languageMovies, setLanguageMovies] = useState<{ [key: string]: Movie[] }>({});
+  const [personalRecs, setPersonalRecs] = useState<{ source_movie: string, movies: Movie[] } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch trending movies (for hero carousel)
-        const trendingRes = await fetch(`${API_BASE}/movies/trending`);
+        const trendingRes = await fetch(`${API_BASE}/movies/trending?limit=5`);
         const trendingData = await trendingRes.json();
         setTrendingMovies(trendingData);
 
         // Fetch top rated movies
-        const topRes = await fetch(`${API_BASE}/movies/top-rated`);
+        const topRes = await fetch(`${API_BASE}/movies/top-rated?limit=10`);
         const topData = await topRes.json();
         setTopMovies(topData);
+
+        // Fetch Personal Recommendations (if auth)
+        const token = localStorage.getItem('token');
+        if (token) {
+          try {
+            const recRes = await fetch(`${API_BASE}/user/recommendations`, {
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (recRes.ok) {
+              const recData = await recRes.json();
+              if (recData.movies && recData.movies.length > 0) {
+                setPersonalRecs(recData);
+              }
+            }
+          } catch (e) {
+            console.error("Error fetching personal recs:", e);
+          }
+        }
 
         // Fetch genres
         const genresRes = await fetch(`${API_BASE}/movies/genres`);
@@ -70,7 +89,7 @@ export default function MoviesPage() {
         const genreMoviesData: { [key: string]: Movie[] } = {};
         for (const genre of genresData.slice(0, 10)) {
           try {
-            const res = await fetch(`${API_BASE}/movies/by-genre/${genre.code}`);
+            const res = await fetch(`${API_BASE}/movies/by-genre/${genre.code}?limit=10`);
             const movies = await res.json();
             genreMoviesData[genre.code] = movies;
           } catch (e) {
@@ -83,7 +102,7 @@ export default function MoviesPage() {
         const languageMoviesData: { [key: string]: Movie[] } = {};
         for (const lang of languagesData.slice(0, 10)) {
           try {
-            const res = await fetch(`${API_BASE}/movies/by-language/${lang.code}`);
+            const res = await fetch(`${API_BASE}/movies/by-language/${lang.code}?limit=10`);
             const movies = await res.json();
             languageMoviesData[lang.code] = movies;
           } catch (e) {
@@ -119,6 +138,16 @@ export default function MoviesPage() {
 
       {/* Content */}
       <div className="pt-10 pb-12">
+        {/* Personal Recommendations Section */}
+        {personalRecs && personalRecs.movies.length > 0 && (
+          <MovieRow
+            title="Có thể bạn sẽ thích"
+            movies={personalRecs.movies}
+            key="personal-recs"
+          // No viewAllLink for now or could point to a dedicated page
+          />
+        )}
+
         {/* Top 10 Movies */}
         {topMovies.length > 0 && (
           <MovieRow

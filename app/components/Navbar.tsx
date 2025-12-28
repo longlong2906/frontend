@@ -59,6 +59,12 @@ export default function Navbar() {
                     >
                         Dashboard
                     </Link>
+                    <Link
+                        href="/evaluation"
+                        className={`text-sm font-medium transition-colors hover:text-white ${isActive('/evaluation') ? 'text-white' : 'text-zinc-400'}`}
+                    >
+                        Đánh giá mô hình
+                    </Link>
                 </div>
 
                 {/* Search Bar */}

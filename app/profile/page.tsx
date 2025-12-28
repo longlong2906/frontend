@@ -16,7 +16,7 @@ interface UserProfile {
 }
 
 export default function ProfilePage() {
-    const { token, isAuthenticated, logout, isLoading } = useAuth();
+    const { token, isAuthenticated, logout, isLoading, removeFavorite } = useAuth();
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const router = useRouter();
 
@@ -50,6 +50,21 @@ export default function ProfilePage() {
 
         fetchProfile();
     }, [isAuthenticated, token, router, logout, isLoading]);
+
+    const handleRemoveFavorite = async (e: React.MouseEvent, movieId: number) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Use functional update to guarantee latest state
+        setProfile(prev => {
+            if (!prev) return null;
+            const newFavorites = prev.favorites.filter((m: any) => Number(m.id) !== Number(movieId));
+            return { ...prev, favorites: newFavorites };
+        });
+
+        // Call global context remove (handles API and global state)
+        await removeFavorite(movieId);
+    };
 
     if (isLoading || !profile) {
         return (
@@ -122,34 +137,47 @@ export default function ProfilePage() {
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {profile.favorites.map((movie: any) => (
-                                <Link href={`/movies/${movie.id}`} key={movie.id} className="group">
-                                    <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-violet-500/50 transition-colors">
-                                        <div className="aspect-[2/3] bg-zinc-800 relative">
-                                            {movie.poster_path ? (
-                                                <Image
-                                                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                                    alt={movie.title}
-                                                    fill
-                                                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                                    sizes="(max-width: 768px) 50vw, 33vw"
-                                                />
-                                            ) : (
-                                                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-violet-900/20 to-fuchsia-900/20 group-hover:scale-105 transition-transform duration-500">
-                                                    <span className="text-4xl group-hover:scale-110 transition-transform">🎬</span>
-                                                </div>
-                                            )}
-                                            <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent">
-                                                <h3 className="font-semibold text-white line-clamp-1">{movie.title}</h3>
-                                                <div className="flex items-center justify-between text-xs text-zinc-400 mt-1">
-                                                    <span>{movie.release_year}</span>
-                                                    <span className="flex items-center gap-1">
-                                                        ⭐ {movie.vote_average?.toFixed(1)}
-                                                    </span>
+                                <div key={movie.id} className="group relative">
+                                    {/* Remove Button - Outside Link */}
+                                    <button
+                                        onClick={(e) => handleRemoveFavorite(e, movie.id)}
+                                        className="absolute top-2 right-2 z-20 bg-black/60 hover:bg-red-500/80 text-white p-1.5 rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
+                                        title="Xóa khỏi yêu thích"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+
+                                    <Link href={`/movies/${movie.id}`} className="block">
+                                        <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-violet-500/50 transition-colors">
+                                            <div className="aspect-[2/3] bg-zinc-800 relative">
+                                                {movie.poster_path ? (
+                                                    <Image
+                                                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                                        alt={movie.title}
+                                                        fill
+                                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                                        sizes="(max-width: 768px) 50vw, 33vw"
+                                                    />
+                                                ) : (
+                                                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-violet-900/20 to-fuchsia-900/20 group-hover:scale-105 transition-transform duration-500">
+                                                        <span className="text-4xl group-hover:scale-110 transition-transform">🎬</span>
+                                                    </div>
+                                                )}
+                                                <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent">
+                                                    <h3 className="font-semibold text-white line-clamp-1">{movie.title}</h3>
+                                                    <div className="flex items-center justify-between text-xs text-zinc-400 mt-1">
+                                                        <span>{movie.release_year}</span>
+                                                        <span className="flex items-center gap-1">
+                                                            ⭐ {movie.vote_average?.toFixed(1)}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Link>
+                                    </Link>
+                                </div>
                             ))}
                         </div>
                     )}
